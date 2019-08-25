@@ -4,7 +4,7 @@
 TMP=$(mktemp -d)
 
 # install vscode
-wget -O $T/vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868
+wget -O $TMP/vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868
 sudo apt-get install -y $T/vscode.deb
 
 # install sublime
@@ -24,8 +24,8 @@ cp ~/dev/.tmux/.tmux.conf.local .
 
 
 # installs golang 1.12.1
-wget -O $T/go1.12.1.linux-amd64.tar.gz https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf $T/go1.12.1.linux-amd64.tar.gz
+wget -O $TMP/go1.12.1.linux-amd64.tar.gz https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf $TMP/go1.12.1.linux-amd64.tar.gz
 mkdir ~/go
 
 cat <<EOF >> ~/.bashrc
@@ -55,8 +55,6 @@ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
   curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
   sudo install /tmp/docker-machine /usr/local/bin/docker-machine
 
-rm -rf $T
-
 # install gcloud sdk
 export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
 echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -64,4 +62,11 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update && sudo apt-get install -y google-cloud-sdk
 gcloud init
 
+# link dotfiles
+ln -s .vimrc ~/.vimrc
+ln -s .vimrc.plug ~/.vimrc
+ln -s .bash_aliases ~/.bash_alias
+
+
+rm -rf $TMP
 
