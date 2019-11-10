@@ -1,0 +1,17 @@
+*.lock
+*.log
+*.pyc
+*.sw[nop]
+.DS_Store
+.bundle
+.exercism
+.ignore
+.vs
+coverage
+dist
+node_modules
+public
+tmp
+secret
+**.vscode/**
+**vendor/**
