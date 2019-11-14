@@ -22,8 +22,8 @@
 [fetch]
   prune = true
 [github]
-  user = geojaz
-  email = eric.hole@gmail.com
+  user = eric-hole
+  email = eric.hole@getcruise.com
 [include]
   path = ~/.gitconfig.local
 [init]
@@ -45,5 +45,5 @@
 [rerere]
   enabled = true
 [user]
-  name = eric-hole
-  email = eric.hole@gmail.com
+	name = Eric Hole
+	email = eric.hole@getcruise.com

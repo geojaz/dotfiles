@@ -55,7 +55,7 @@ fi
 setopt hist_ignore_all_dups inc_append_history hist_ignore_space
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
-setopt HIST_EXPIRE_DUPS_FIRST  
+setopt HIST_EXPIRE_DUPS_FIRST
 HISTFILE=~/.zhistory
 HISTSIZE=4096
 SAVEHIST=4096
@@ -100,5 +100,4 @@ if [ -f '/Users/eric.hole/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/eric.
 if [ -f '/Users/eric.hole/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/eric.hole/google-cloud-sdk/completion.zsh.inc'; fi
 
 # Vault
-# export VAULT_ADDR=https://vault.secure.car:8200
-
+export VAULT_ADDR=https://vault.secure.car:8200
