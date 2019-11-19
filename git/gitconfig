@@ -45,5 +45,7 @@
 [rerere]
   enabled = true
 [user]
-	name = Eric Hole
-	email = eric.hole@getcruise.com
+  name = eric-hole
+  email = eric.hole@gmail.com
+[http]
+	postBuffer = 1048576000

@@ -5,14 +5,34 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-
 # Adapted from https://cloud.google.com/blog/products/application-development/build-a-dev-workflow-with-cloud-code-on-a-pixelbook and others
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-sdk -y
+touch $HOME/.zshrc
 
-sudo apt-get update && sudo apt-get install -y \
+source /etc/os-release
+if [[ ! $ID=~debian ]]; then
+ # this doesn't work on mac
+    exit 1
+fi
+
+# gcloud sdk
+if [[ ! $(command -v gcloud) ]]; then
+    sudo apt-get update && sudo apt-get install -y --allow-unauthenticated google-cloud-sdk
+    sed -i '1iexport PATH="/usr/lib/google-cloud-sdk/bin:$PATH"' ~/.zshrc
+fi
+
+if [[ ! $(command -v skaffold) ]]; then
+    curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+    chmod +x skaffold
+    sudo mv skaffold /usr/local/bin
+fi
+
+sudo apt --fix-broken install -y
+sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
+    jq \
     gnupg2 \
     gcc g++ \
     htop \
@@ -27,7 +47,11 @@ if [ ! $(command -v go) ]; then
     tar xzf go1.13.4.linux-amd64.tar.gz && sudo mv -n go /usr/local && rm -rf go*
     export PATH=/usr/local/go/bin:$PATH
 fi
-    go get -u github.com/justjanne/powerline-go
+
+# powerline-go
+if [ ! $(command -v powerline-go) ]; then
+  go get -u github.com/justjanne/powerline-go
+fi
 
 # docker-ce
 if [ ! $(command -v docker) ]
@@ -50,6 +74,12 @@ chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 fi
 
+# krew
+sudo apt install kubectx
+
+
+sudo apt --fix-broken install
+
 # vscode
 if [ ! $(command -v code) ]
 then
@@ -62,14 +92,27 @@ fi
 # install vscode extensions
 code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-vscode-remote.remote-containers
+code --install-extension GoogleCloudTools.cloudcode
 
 # terminal
 sudo apt install -y gnome-terminal
 
+open() {
+  setsid nohup xdg-open $1 > /dev/null 2> /dev/null
+}
+
+sudo apt-get install xclip
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
 # fonts
 sudo apt-get install -y fonts-powerline
-mkdir -p "$HOME/.fonts"
-wget https://github.com/tonsky/FiraCode/releases/download/2/FiraCode_2.zip
-unzip FiraCode_2.zip -d FiraCode_2 && mv -n FiraCode_2/ttf/ "$HOME/.fonts"
-rm -rf FiraCode*
-fc-cache -fv
+if [[ ! $(ls -l $HOME/.fonts/Fira* 2>/dev/null | wc -l) > 0 ]]; then
+	mkdir -p "$HOME/.fonts"
+	wget https://github.com/tonsky/FiraCode/releases/download/2/FiraCode_2.zip
+	unzip FiraCode_2.zip -d FiraCode_2 && mv -n FiraCode_2/ttf/ "$HOME/.fonts"
+	rm -rf FiraCode*
+	fc-cache -fv
+fi
+	
+sudo apt autoremove -y

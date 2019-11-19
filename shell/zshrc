@@ -5,7 +5,7 @@ alias mkdir="mkdir -p"
 alias path='echo $PATH | tr -s ":" "\n"'
 
 alias st='git status'
-alias ls='ls -alh'
+alias ls='ls -lh'
 alias gca='git commit --amend'
 alias gpfo='git push origin --force'
 alias gpom='git pull origin master'
@@ -60,9 +60,6 @@ HISTFILE=~/.zhistory
 HISTSIZE=4096
 SAVEHIST=4096
 
-# Disable Homebrew analytics https://docs.brew.sh/Analytics
-unset HOMEBREW_NO_ANALYTICS
-
 # fzf for finding files, ag for searching files
 if [ -d /usr/local/opt/fzf/shell ]; then
   source "/usr/local/opt/fzf/shell/completion.zsh"
@@ -93,11 +90,11 @@ export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
 PATH="$HOME/bin:$PATH"
 export PATH
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/eric.hole/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/eric.hole/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/eric.hole/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/eric.hole/google-cloud-sdk/completion.zsh.inc'; fi
-
 # Vault
 export VAULT_ADDR=https://vault.secure.car:8200
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/erichole/google-cloud-sdk/path.zsh.inc' ]; then . '/home/erichole/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/erichole/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/erichole/google-cloud-sdk/completion.zsh.inc'; fi
