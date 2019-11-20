@@ -41,7 +41,6 @@ sudo apt-get install -y \
     jq \
     gnome-terminal \
     gnupg2 \
-    google-cloud-sdk \
     gcc g++ \
     htop \
     nethogs \
@@ -71,6 +70,11 @@ if [ ! $(command -v powerline-go) ]; then
   go get -d github.com/justjanne/powerline-go
 fi
 
+
+# delve
+if [ ! $(command -v dlv) ]; then
+  go get -u github.com/go-delve/delve/cmd/dlv
+fi
 
 # kubectl
 if [ ! $(command -v kubectl) ]
