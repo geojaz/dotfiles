@@ -2,6 +2,8 @@
 touch ~/.zshrc
 
 # set up symlinks
+
+ln -sf "$PWD/editor/vimrc" "$HOME/.vimrc"
 ln -sf "$PWD/git/gitconfig" "$HOME/.gitconfig"
 ln -sf "$PWD/git/gitignore" "$HOME/.gitignore"
 ln -sf "$PWD/git/gitmessage" "$HOME/.gitmessage"

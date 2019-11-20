@@ -1,3 +1,6 @@
+export PATH="/usr/lib/google-cloud-sdk/bin:$PATH"
+export PATH="/usr/lib/google-cloud-sdk/bin:$PATH"
+export PATH="/usr/lib/google-cloud-sdk/bin:$PATH"
 #!/usr/bin/env zsh
 
 # Aliases
@@ -5,10 +8,7 @@ alias mkdir="mkdir -p"
 alias path='echo $PATH | tr -s ":" "\n"'
 
 alias st='git status'
-alias ls='ls -lh --color=auto'
-alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias -g G='| grep -i'
-
+alias ls='ls -lh'
 alias gca='git commit --amend'
 alias gpfo='git push origin --force'
 alias gpom='git pull origin master'
@@ -70,37 +70,18 @@ if [ -d /usr/local/opt/fzf/shell ]; then
 fi
 export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 
-setopt autocd autopushd pushdminus pushdsilent pushdtohome pushdignoredups
-setopt alwaystoend correct
-
 # Color
 autoload -U colors
 colors
 export CLICOLOR=1
 
 # Completion
-
-
-# case-insensitive (uppercase from lowercase) completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# process completion
-zstyle ':completion:*:processes' command 'ps -au$USER'
-zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
-
-# zstyle
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*:descriptions' format '%U%F{yellow}%d%f%u'
-zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
-
-autoload -U promptinit && promptinit
-autoload -U compinit compdef && compinit
+autoload -U compinit
+compinit
 
 # Configure Go
-GOPATH="$HOME/go"
+export GO111MODULE=on
+export GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$PATH"
 PATH="/usr/local/go/bin:$PATH"
 
@@ -112,6 +93,9 @@ export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
 PATH="$HOME/bin:$PATH"
 export PATH
 
-source $HOME/google-cloud-sdk/path.zsh.inc
-source $HOME/google-cloud-sdk/completion.zsh.inc
+# Vault
+export VAULT_ADDR=https://vault.secure.car:8200
 
+source $HOME/google-cloud-sdk/path.zsh.inc
+
+source $HOME/google-cloud-sdk/completion.zsh.inc
