@@ -5,7 +5,9 @@ alias mkdir="mkdir -p"
 alias path='echo $PATH | tr -s ":" "\n"'
 
 alias st='git status'
-alias ls='ls -lh'
+alias ls='ls -lh --color tty'
+grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+
 alias gca='git commit --amend'
 alias gpfo='git push origin --force'
 alias gpom='git pull origin master'
@@ -77,8 +79,7 @@ autoload -U compinit
 compinit
 
 # Configure Go
-export GO111MODULE=on
-export GOPATH="$HOME/go"
+GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$PATH"
 PATH="/usr/local/go/bin:$PATH"
 

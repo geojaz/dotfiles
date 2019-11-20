@@ -44,6 +44,7 @@ sudo apt-get install -y \
     google-cloud-sdk \
     gcc g++ \
     htop \
+    nethogs \
     software-properties-common \
     tree \
     xclip \
