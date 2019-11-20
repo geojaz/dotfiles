@@ -1,4 +1,5 @@
-#!/bin/env bash
+#!/usr/bin/env bash
+touch ~/.zshrc
 
 # set up symlinks
 ln -sf "$PWD/git/gitconfig" "$HOME/.gitconfig"
