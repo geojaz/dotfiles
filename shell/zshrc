@@ -79,8 +79,6 @@ colors
 export CLICOLOR=1
 
 # Completion
-
-
 # case-insensitive (uppercase from lowercase) completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
@@ -98,6 +96,7 @@ zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
 
 autoload -U promptinit && promptinit
 autoload -U compinit compdef && compinit
+source $HOME/dev/dotfiles/completion/docker-machine
 
 # Configure Go
 GOPATH="$HOME/go"
