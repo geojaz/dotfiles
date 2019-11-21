@@ -48,8 +48,17 @@ sudo apt-get install -y \
     tree \
     xclip \
     xz-utils \
-    zsh lsb-release docker-ce docker-ce-cli containerd.io
+    zsh lsb-release 
 
+# docker install
+sudo apt-get install -y\
+    docker-ce \
+    docker-ce-cli \
+    containerd.io
+base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+  sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&
+  chmod +x /usr/local/bin/docker-machine
 sudo usermod -aG docker $USER
 
 if [ ! $(command -v go) ]; then
