@@ -20,15 +20,14 @@ sudo apt-get install -y \
     gnupg-agent \
     software-properties-common
 
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+
 sudo add-apt-repository -r "deb http://deb.debian.org/debian stretch-backports main contrib non-free"
 sudo add-apt-repository -r "deb http://http.us.debian.org/debian sid main non-free contrib"
 sudo add-apt-repository -r "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" 
 
-# curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-
 sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
    $(lsb_release -cs) \
    stable"
 
