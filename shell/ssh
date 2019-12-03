@@ -3,6 +3,9 @@ Host *
   IdentityFile ~/.ssh/id_ed25519
 
 Host github.com
-  Hostname ssh.github.com
+  HostName ssh.github.com
   Port 443
-
+Host 35.193.13.116
+  HostName 35.193.13.116
+  IdentityFile id_ed25519
+  User ext_eric_hole_gmail_com
