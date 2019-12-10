@@ -99,7 +99,7 @@ autoload -U compinit compdef && compinit
 source $HOME/dev/dotfiles/completion/docker-machine
 
 # Configure Go
-GOPATH="$HOME/go"
+export GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$PATH"
 PATH="/usr/local/go/bin:$PATH"
 
@@ -109,8 +109,12 @@ export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
 
 # Prepend my local bin
 PATH="$HOME/bin:$PATH"
-export PATH
+PATH="$HOME/.local/bin:$PATH"
 
-source $HOME/google-cloud-sdk/path.zsh.inc
-source $HOME/google-cloud-sdk/completion.zsh.inc
+source /home/ehole/.local/bin/aws_zsh_completer.sh
+source <(k completion zsh)
+source <(kops completion zsh)
+export PATH="/home/ehole/go/src/k8s.io/kubernetes/third_party/etcd:${PATH}"
+# following tells kubetest that i want to manage test infra lifecycle mysefl
+export E2E_UP=false; export E2E_DOWN=false
 
