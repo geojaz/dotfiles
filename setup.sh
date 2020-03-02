@@ -31,7 +31,7 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 
-sudo apt-get update -y 
+sudo apt-get update -y
 
 touch ~/.zshrc
 sed -i '1iexport PATH="/usr/lib/google-cloud-sdk/bin:$PATH"' ~/.zshrc
@@ -54,13 +54,14 @@ sudo apt-get install -y \
     tree \
     xclip \
     xz-utils \
-    zsh lsb-release 
+    zsh lsb-release
 
 # docker install
 sudo apt-get install -y\
     docker-ce \
     docker-ce-cli \
     containerd.io
+
 base=https://github.com/docker/machine/releases/download/v0.16.0 &&
   curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
   sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&

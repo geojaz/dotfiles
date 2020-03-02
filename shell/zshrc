@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+export PATH=/usr/bin:/usr/local/bin:/bin:/sbin:/usr/local/sbin:/usr/sbin:/usr/local/go/bin:/snap/bin
+export GOPATH=$HOME/go
 # Aliases
 alias mkdir="mkdir -p"
 alias path='echo $PATH | tr -s ":" "\n"'
@@ -63,11 +65,13 @@ HISTFILE=~/.zhistory
 HISTSIZE=4096
 SAVEHIST=4096
 
+include () {
+    [[ -f "$1" ]] && source "$1"
+}
+
 # fzf for finding files, ag for searching files
-if [ -d /usr/local/opt/fzf/shell ]; then
-  source "/usr/local/opt/fzf/shell/completion.zsh"
-  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-fi
+include "/usr/local/opt/fzf/shell/completion.zsh"
+include "/usr/local/opt/fzf/shell/key-bindings.zsh"
 export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 
 setopt autocd autopushd pushdminus pushdsilent pushdtohome pushdignoredups
@@ -96,25 +100,34 @@ zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
 
 autoload -U promptinit && promptinit
 autoload -U compinit compdef && compinit
-source $HOME/dev/dotfiles/completion/docker-machine
+autoload -U bashcompinit && bashcompinit
 
 # Configure Go
-export GOPATH="$HOME/go"
-PATH="$GOPATH/bin:$PATH"
-PATH="/usr/local/go/bin:$PATH"
+export PATH="$HOME/bin:$HOME/go/bin:$PATH"
 
 # Set environment variable for localhost TLS certificate authority file
 # https://github.com/FiloSottile/mkcert
 export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
 
 # Prepend my local bin
-PATH="$HOME/bin:$PATH"
 PATH="$HOME/.local/bin:$PATH"
 
-source /home/ehole/.local/bin/aws_zsh_completer.sh
+include /home/ehole/.local/bin/aws_zsh_completer.sh
 source <(k completion zsh)
 source <(kops completion zsh)
-export PATH="/home/ehole/go/src/k8s.io/kubernetes/third_party/etcd:${PATH}"
-# following tells kubetest that i want to manage test infra lifecycle mysefl
-export E2E_UP=false; export E2E_DOWN=false
+export PATH="/home/eric/go/src/k8s.io/kubernetes/third_party/etcd:$PATH"
+export KOPS_FEATURE_FLAGS=AlphaAllowGCE
 
+export PATH="$HOME/.rbenv/bin:$PATH"
+export FPATH=~/.zfunc:$FPATH
+# This way the completion script does not have to parse Bazel's options
+# repeatedly.  The directory in cache-path must be created manually.
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+eval "$(rbenv init -)"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/eric/google-cloud-sdk/path.zsh.inc' ]; then . '/home/eric/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/eric/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/eric/google-cloud-sdk/completion.zsh.inc'; fi
