@@ -6,12 +6,13 @@
 .bundle
 .exercism
 .ignore
+.terraform/**
+**tfplan**
 .vs
 coverage
 dist
 node_modules
 public
 tmp
-secret
 **.vscode/**
 **vendor/**

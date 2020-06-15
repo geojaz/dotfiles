@@ -33,3 +33,6 @@ set incsearch
 
 " line numbers on
 set number
+
+au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/yaml.vim
+

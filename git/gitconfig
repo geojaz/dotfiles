@@ -15,8 +15,6 @@
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
-[credential]
-  helper = osxkeychain
 [diff]
   tool = vimdiff
 [fetch]
@@ -49,3 +47,8 @@
   email = eric.hole@gmail.com
 [http]
 	postBuffer = 1048576000
+	cookiefile = /home/ehole/.gitcookies
+[pull]
+	rebase = true
+[credential "https://source.developers.google.com"]
+	helper = gcloud.sh

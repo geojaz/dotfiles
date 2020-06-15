@@ -96,25 +96,34 @@ zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
 
 autoload -U promptinit && promptinit
 autoload -U compinit compdef && compinit
-source $HOME/dev/dotfiles/completion/docker-machine
 
 # Configure Go
 export GOPATH="$HOME/go"
-PATH="$GOPATH/bin:$PATH"
-PATH="/usr/local/go/bin:$PATH"
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
 
 # Set environment variable for localhost TLS certificate authority file
 # https://github.com/FiloSottile/mkcert
 export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
 
 # Prepend my local bin
-PATH="$HOME/bin:$PATH"
-PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/home/ehole/go/src/k8s.io/kubernetes/third_party/etcd:/home/ehole/go/src/k8s.io/kubernetes/_output/bin:${PATH}"
 
-source /home/ehole/.local/bin/aws_zsh_completer.sh
+#source /home/ehole/.local/bin/aws_zsh_completer.sh
 source <(k completion zsh)
 source <(kops completion zsh)
-export PATH="/home/ehole/go/src/k8s.io/kubernetes/third_party/etcd:${PATH}"
-# following tells kubetest that i want to manage test infra lifecycle mysefl
-export E2E_UP=false; export E2E_DOWN=false
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/ehole/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ehole/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/ehole/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ehole/google-cloud-sdk/completion.zsh.inc'; fi
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/ehole/google-cloud-sdk/bin/anthoscli anthoscli
+
+export PATH=$HOME/dev/apache-maven-3.6.3/bin:/home/ehole/zoom:$PATH
+export JAVA_HOME=/opt/java/jdk-11.0.7+10
