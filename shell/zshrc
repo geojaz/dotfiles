@@ -127,3 +127,12 @@ complete -o nospace -C /home/ehole/google-cloud-sdk/bin/anthoscli anthoscli
 
 export PATH=$HOME/dev/apache-maven-3.6.3/bin:/home/ehole/zoom:$PATH
 export JAVA_HOME=/opt/java/jdk-11.0.7+10
+export KUBECONFIG=$HOME/.kube/admin-cluster:$HOME/.kube/user-cluster:$HOME/.kube/config
+
+# asdf version manager
+. $HOME/.asdf/asdf.sh
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# initialise completions with ZSH's compinit
+compinit
+
