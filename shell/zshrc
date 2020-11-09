@@ -1,0 +1,140 @@
+#!/usr/bin/env zsh
+
+# Aliases
+alias mkdir="mkdir -p"
+alias path='echo $PATH | tr -s ":" "\n"'
+
+alias st='git status'
+# alias ls='ls lh --color=auto'
+alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias -g G='| grep -i'
+
+alias gca='git commit --amend'
+alias gpfo='git push origin --force'
+alias gpom='git pull origin main'
+alias gl1='git log --pretty=oneline'
+alias latest_branches='git for-each-ref --sort=-committerdate refs/heads/'
+
+# kubernetes
+alias k='kubectl'
+
+alias kgp='k get pod'
+alias kgd='k get deploy'
+alias kgs='k get svc -oyaml'
+alias kgc='k get configmap -oyaml'
+
+alias klog='k logs -f'
+alias ktop='k top pod'
+alias kx='k exec -ti '
+
+# Autocomplete branch names for git delete-branch
+function _git_delete_branch() {
+  __gitcomp "$(__git_heads)"
+}
+
+# powerline-go
+# https://github.com/justjanne/powerline-go#zsh
+function powerline_precmd() {
+    eval "$($GOPATH/bin/powerline-go -error $? -shell zsh \
+          -modules=ssh,cwd,kube,newline,gitlite,root \
+          -modules-right=time,load \
+          -eval)"
+}
+
+function install_powerline_precmd() {
+  for s in "${precmd_functions[@]}"; do
+    if [ "$s" = "powerline_precmd" ]; then
+      return
+    fi
+  done
+  precmd_functions+=(powerline_precmd)
+}
+
+if [ "$TERM" != "linux" ]; then
+    install_powerline_precmd
+fi
+
+# History
+setopt hist_ignore_all_dups inc_append_history hist_ignore_space
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_EXPIRE_DUPS_FIRST
+HISTFILE=~/.zhistory
+HISTSIZE=4096
+SAVEHIST=4096
+
+# fzf for finding files, ag for searching files
+if [ -d /usr/local/opt/fzf/shell ]; then
+  source "/usr/local/opt/fzf/shell/completion.zsh"
+  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+fi
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+
+setopt autocd autopushd pushdminus pushdsilent pushdtohome pushdignoredups
+setopt alwaystoend correct
+
+# Color
+autoload -U colors
+colors
+export CLICOLOR=1
+
+# Completion
+# case-insensitive (uppercase from lowercase) completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# process completion
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
+
+# zstyle
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:descriptions' format '%U%F{yellow}%d%f%u'
+zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
+
+autoload -U promptinit && promptinit
+autoload -U compinit compdef && compinit
+
+# Configure Go
+export GOPATH="$HOME/go"
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+
+# Set environment variable for localhost TLS certificate authority file
+# https://github.com/FiloSottile/mkcert
+export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
+
+# Prepend my local bin
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/home/ehole/go/src/k8s.io/kubernetes/third_party/etcd:/home/ehole/go/src/k8s.io/kubernetes/_output/bin:${PATH}"
+
+#source /home/ehole/.local/bin/aws_zsh_completer.sh
+source <(k completion zsh)
+source <(kops completion zsh)
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/ehole/google-cloud-sdk/bin/anthoscli anthoscli
+
+export PATH=$HOME/dev/apache-maven-3.6.3/bin:/home/ehole/zoom:$PATH
+export JAVA_HOME=/opt/java/jdk-11.0.7+10
+export KUBECONFIG=$HOME/.kube/admin-cluster:$HOME/.kube/user-cluster:$HOME/.kube/config
+
+# asdf version manager
+. $HOME/.asdf/asdf.sh
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# initialise completions with ZSH's compinit
+compinit
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/ehole/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ehole/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/ehole/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ehole/google-cloud-sdk/completion.zsh.inc'; fi
