@@ -29,4 +29,44 @@ Host gce-cloud.us-west1-b.ehole-dev-abc
     IdentitiesOnly=yes
     CheckHostIP=no
 
+Host ehole-atlantis.us-central1-a.pso-box-cicd-4c6e
+    HostName 34.121.95.95
+    IdentityFile /Users/ehole/.ssh/google_compute_engine
+    UserKnownHostsFile=/Users/ehole/.ssh/google_compute_known_hosts
+    HostKeyAlias=compute.3064791499558302060
+    IdentitiesOnly=yes
+    CheckHostIP=no
+
+Host gke-cicd-dev2-nodepool-1-dd84490f-me9c.us-central1-a.pso-box-cicd-4c6e
+    HostName 34.71.159.173
+    IdentityFile /Users/ehole/.ssh/google_compute_engine
+    UserKnownHostsFile=/Users/ehole/.ssh/google_compute_known_hosts
+    HostKeyAlias=compute.89925373131700133
+    IdentitiesOnly=yes
+    CheckHostIP=no
+
+Host gke-cicd-dev2-nodepool-1-b974d327-s266.us-central1-b.pso-box-cicd-4c6e
+    HostName 35.188.192.0
+    IdentityFile /Users/ehole/.ssh/google_compute_engine
+    UserKnownHostsFile=/Users/ehole/.ssh/google_compute_known_hosts
+    HostKeyAlias=compute.3624390588214752256
+    IdentitiesOnly=yes
+    CheckHostIP=no
+
+Host gke-cicd-dev2-nodepool-1-e6a62d13-od91.us-central1-f.pso-box-cicd-4c6e
+    HostName 34.69.43.109
+    IdentityFile /Users/ehole/.ssh/google_compute_engine
+    UserKnownHostsFile=/Users/ehole/.ssh/google_compute_known_hosts
+    HostKeyAlias=compute.7843539676941989116
+    IdentitiesOnly=yes
+    CheckHostIP=no
+
+Host gke-cicd-dev2-nodepool-1-e6a62d13-s2q9.us-central1-f.pso-box-cicd-4c6e
+    HostName 34.121.96.244
+    IdentityFile /Users/ehole/.ssh/google_compute_engine
+    UserKnownHostsFile=/Users/ehole/.ssh/google_compute_known_hosts
+    HostKeyAlias=compute.1483061838803317912
+    IdentitiesOnly=yes
+    CheckHostIP=no
+
 # End of Google Compute Engine Section

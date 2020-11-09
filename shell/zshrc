@@ -5,13 +5,13 @@ alias mkdir="mkdir -p"
 alias path='echo $PATH | tr -s ":" "\n"'
 
 alias st='git status'
-alias ls='ls -lh --color=auto'
+# alias ls='ls lh --color=auto'
 alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias -g G='| grep -i'
 
 alias gca='git commit --amend'
 alias gpfo='git push origin --force'
-alias gpom='git pull origin master'
+alias gpom='git pull origin main'
 alias gl1='git log --pretty=oneline'
 alias latest_branches='git for-each-ref --sort=-committerdate refs/heads/'
 
@@ -115,13 +115,9 @@ source <(k completion zsh)
 source <(kops completion zsh)
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/ehole/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ehole/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/ehole/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ehole/google-cloud-sdk/completion.zsh.inc'; fi
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /home/ehole/google-cloud-sdk/bin/anthoscli anthoscli
 
@@ -136,3 +132,9 @@ fpath=(${ASDF_DIR}/completions $fpath)
 # initialise completions with ZSH's compinit
 compinit
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/ehole/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ehole/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/ehole/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ehole/google-cloud-sdk/completion.zsh.inc'; fi
