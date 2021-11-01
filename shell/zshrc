@@ -1,17 +1,118 @@
-#!/usr/bin/env zsh
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/ehole/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="random"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+autoload -Uz compinit
+compinit
+
 
 # Aliases
 alias mkdir="mkdir -p"
 alias path='echo $PATH | tr -s ":" "\n"'
 
 alias st='git status'
-# alias ls='ls lh --color=auto'
-alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias -g G='| grep -i'
-
+alias ls='ls -lh'
 alias gca='git commit --amend'
 alias gpfo='git push origin --force'
-alias gpom='git pull origin main'
+alias gpom='git pull origin master'
 alias gl1='git log --pretty=oneline'
 alias latest_branches='git for-each-ref --sort=-committerdate refs/heads/'
 
@@ -27,114 +128,34 @@ alias klog='k logs -f'
 alias ktop='k top pod'
 alias kx='k exec -ti '
 
-# Autocomplete branch names for git delete-branch
-function _git_delete_branch() {
-  __gitcomp "$(__git_heads)"
-}
-
-# powerline-go
-# https://github.com/justjanne/powerline-go#zsh
-function powerline_precmd() {
-    eval "$($GOPATH/bin/powerline-go -error $? -shell zsh \
-          -modules=ssh,cwd,kube,newline,gitlite,root \
-          -modules-right=time,load \
-          -eval)"
-}
-
-function install_powerline_precmd() {
-  for s in "${precmd_functions[@]}"; do
-    if [ "$s" = "powerline_precmd" ]; then
-      return
-    fi
-  done
-  precmd_functions+=(powerline_precmd)
-}
-
-if [ "$TERM" != "linux" ]; then
-    install_powerline_precmd
-fi
-
 # History
 setopt hist_ignore_all_dups inc_append_history hist_ignore_space
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
 setopt HIST_EXPIRE_DUPS_FIRST
 HISTFILE=~/.zhistory
-HISTSIZE=4096
-SAVEHIST=4096
-
-# fzf for finding files, ag for searching files
-if [ -d /usr/local/opt/fzf/shell ]; then
-  source "/usr/local/opt/fzf/shell/completion.zsh"
-  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-fi
-export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
-
-setopt autocd autopushd pushdminus pushdsilent pushdtohome pushdignoredups
-setopt alwaystoend correct
+HISTSIZE=20000
+SAVEHIST=20000
 
 # Color
 autoload -U colors
 colors
 export CLICOLOR=1
 
-# Completion
-# case-insensitive (uppercase from lowercase) completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# process completion
-zstyle ':completion:*:processes' command 'ps -au$USER'
-zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
-
-# zstyle
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*:descriptions' format '%U%F{yellow}%d%f%u'
-zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
-
-autoload -U promptinit && promptinit
-autoload -U compinit compdef && compinit
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Configure Go
+export GO111MODULE=on
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
-
-# Set environment variable for localhost TLS certificate authority file
-# https://github.com/FiloSottile/mkcert
-export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
+PATH="$GOPATH/bin:$PATH"
+PATH="/usr/local/go/bin:$PATH"
 
 # Prepend my local bin
-export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="/home/ehole/go/src/k8s.io/kubernetes/third_party/etcd:/home/ehole/go/src/k8s.io/kubernetes/_output/bin:${PATH}"
-
-#source /home/ehole/.local/bin/aws_zsh_completer.sh
-source <(k completion zsh)
-source <(kops completion zsh)
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-
-
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /home/ehole/google-cloud-sdk/bin/anthoscli anthoscli
-
-export PATH=$HOME/dev/apache-maven-3.6.3/bin:/home/ehole/zoom:$PATH
-export JAVA_HOME=/opt/java/jdk-11.0.7+10
-export KUBECONFIG=$HOME/.kube/admin-cluster:$HOME/.kube/user-cluster:$HOME/.kube/config
-
-# asdf version manager
-. $HOME/.asdf/asdf.sh
-# append completions to fpath
-fpath=(${ASDF_DIR}/completions $fpath)
-# initialise completions with ZSH's compinit
-compinit
-
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ehole/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ehole/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/ehole/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ehole/google-cloud-sdk/completion.zsh.inc'; fi
+PATH="$HOME/bin:$PATH"
+export PATH
+export PATH="$PATH:/Users/ehole/Downloads/google-cloud-sdk/bin"
+source $HOME/Downloads/google-cloud-sdk/path.zsh.inc
+source $HOME/Downloads/google-cloud-sdk/completion.zsh.inc
+source <(kubectl completion zsh)
+echo 'complete -F __start_kubectl k' >>~/.zshrc
+complete -F __start_kubectl k
