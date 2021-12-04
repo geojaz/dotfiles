@@ -1,0 +1,101 @@
+export PATH="/usr/lib/google-cloud-sdk/bin:$PATH"
+export PATH="/usr/lib/google-cloud-sdk/bin:$PATH"
+export PATH="/usr/lib/google-cloud-sdk/bin:$PATH"
+#!/usr/bin/env zsh
+
+# Aliases
+alias mkdir="mkdir -p"
+alias path='echo $PATH | tr -s ":" "\n"'
+
+alias st='git status'
+alias ls='ls -lh'
+alias gca='git commit --amend'
+alias gpfo='git push origin --force'
+alias gpom='git pull origin master'
+alias gl1='git log --pretty=oneline'
+alias latest_branches='git for-each-ref --sort=-committerdate refs/heads/'
+
+# kubernetes
+alias k='kubectl'
+
+alias kgp='k get pod'
+alias kgd='k get deploy'
+alias kgs='k get svc -oyaml'
+alias kgc='k get configmap -oyaml'
+
+alias klog='k logs -f'
+alias ktop='k top pod'
+alias kx='k exec -ti '
+
+# Autocomplete branch names for git delete-branch
+function _git_delete_branch() {
+  __gitcomp "$(__git_heads)"
+}
+
+# powerline-go
+# https://github.com/justjanne/powerline-go#zsh
+function powerline_precmd() {
+    eval "$($GOPATH/bin/powerline-go -error $? -shell zsh \
+          -modules=ssh,cwd,kube,newline,gitlite,root \
+          -modules-right=time,load \
+          -eval)"
+}
+
+function install_powerline_precmd() {
+  for s in "${precmd_functions[@]}"; do
+    if [ "$s" = "powerline_precmd" ]; then
+      return
+    fi
+  done
+  precmd_functions+=(powerline_precmd)
+}
+
+if [ "$TERM" != "linux" ]; then
+    install_powerline_precmd
+fi
+
+# History
+setopt hist_ignore_all_dups inc_append_history hist_ignore_space
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_EXPIRE_DUPS_FIRST
+HISTFILE=~/.zhistory
+HISTSIZE=4096
+SAVEHIST=4096
+
+# fzf for finding files, ag for searching files
+if [ -d /usr/local/opt/fzf/shell ]; then
+  source "/usr/local/opt/fzf/shell/completion.zsh"
+  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+fi
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+
+# Color
+autoload -U colors
+colors
+export CLICOLOR=1
+
+# Completion
+autoload -U compinit
+compinit
+
+# Configure Go
+export GO111MODULE=on
+export GOPATH="$HOME/go"
+PATH="$GOPATH/bin:$PATH"
+PATH="/usr/local/go/bin:$PATH"
+
+# Set environment variable for localhost TLS certificate authority file
+# https://github.com/FiloSottile/mkcert
+export CAFILE="$HOME/Library/Application Support/mkcert/rootCA.pem"
+
+# Prepend my local bin
+PATH="$HOME/bin:$PATH"
+export PATH
+
+# Vault
+export VAULT_ADDR=https://vault.secure.car:8200
+
+source $HOME/google-cloud-sdk/path.zsh.inc
+
+source $HOME/google-cloud-sdk/completion.zsh.inc
